@@ -3,6 +3,8 @@ package io.github.turpcoding.easyreport;
 import java.sql.*;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,10 +60,11 @@ public class DatabaseBridge {
                 currentRow.add(rs.getString("playerThatReported"));
                 currentRow.add(rs.getString("reason"));
                 currentRow.add(rs.getString("date"));
+                currentRow.add(rs.getString("timestamp"));
                 queryResults.add(currentRow);
             }
             rs.close();
-        return queryResults;
+            return queryResults;
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Error thrown when executing DatabaseBridge.getReports()");
@@ -71,10 +74,13 @@ public class DatabaseBridge {
     public boolean insertInto(String reportedPlayer, String playerThatReported, String reason) {
         try {
             Connection connection = connectToDatabase();
-            String date = LocalDate.now(ZoneId.of("America/Los_Angeles")).toString();
+            Date time = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            String date = LocalDate.now(ZoneId.of("Asia/Jakarta")).toString();
+            String timestamp = sdf.format(time);
             String query = MessageFormat.format(
-                    "INSERT INTO reports (reportedPlayer,playerThatReported,reason,date) VALUES ({0},{1},{2},{3});",
-                    "'" + reportedPlayer + "'", "'" + playerThatReported + "'", "'" + reason + "'", "'" + date + "'");
+                    "INSERT INTO reports (reportedPlayer,playerThatReported,reason,date,timestamp) VALUES ({0},{1},{2},{3},{4});",
+                    "'" + reportedPlayer + "'", "'" + playerThatReported + "'", "'" + reason + "'", "'" + date + "'", "'" + timestamp + "'");
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
             connection.close();

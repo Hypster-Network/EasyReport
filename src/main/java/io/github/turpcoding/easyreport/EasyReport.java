@@ -39,18 +39,12 @@ public class EasyReport extends JavaPlugin {
         saveDefaultCustomConfig();
         Objects.requireNonNull(this.getCommand("report"), "Check the command's name on 'plugin.yml'.").setExecutor(new ReportCommand());
 
-        Bukkit.getLogger().info("[EasyReport] Plugin successfully enabled!");
+        Bukkit.getLogger().info("[Hypster-Report] Plugin successfully enabled!");
     }
 
     @Override
     public void onDisable() {
-        if (getConfig().getBoolean("discord.enabled"))
-            try {
-                DiscordWebhookAPI.executeWebhook("INFO", "Plugin disabled.", Color.BLUE);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
+        Bukkit.getLogger().info("[Hypster-Report] Plugin successfully disabled!");
     }
 
     public void reloadCustomConfig() {

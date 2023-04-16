@@ -47,7 +47,7 @@ public class ReportCommand implements CommandExecutor {
                         "&e/report removestaff &6<player> &f- removes a player from the staff list so they stop getting notified about reports.\n" +
                         "&e/report reload &f- reloads the plugin's 'config.yml' and 'staff.yml' files.\n";
 
-                String helpWithPrefix = "&4&l[EasyReport]&r&c - Turp's Easy & Simple Report Plugin\n" + helpWithoutPrefix;
+                String helpWithPrefix = "&c[Hypster-Report]&r - Hypster-Report is a simple plugin forked from EasyReport by Turp's\n" + helpWithoutPrefix;
 
                 String help = ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
@@ -68,8 +68,8 @@ public class ReportCommand implements CommandExecutor {
 
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
-                                ?  "&aTurp's Easy & Simple Report Plugin (EasyReport) reloaded."
-                                : "&4&l[EasyReport]&r &aTurp's Easy & Simple Report Plugin (EasyReport) reloaded."));
+                                ?  "&aHypster-Report is a simple plugin forked from EasyReport by Turp's"
+                                : "&c[Hypster-Report]&r &aHypster-Report is a simple plugin forked from EasyReport by Turp's"));
                 return true;
             }
 
@@ -86,7 +86,7 @@ public class ReportCommand implements CommandExecutor {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                                         ?  "&cPlayer already on the staff list."
-                                        : "&4&l[EasyReport]&r &cPlayer already on the staff list."));
+                                        : "&c[Hypster-Report]&r &cPlayer already on the staff list."));
                         return true;
                     }
                 }
@@ -100,7 +100,7 @@ public class ReportCommand implements CommandExecutor {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                                 ? "&aPlayer added to the staff list."
-                                : "&4&l[EasyReport]&r &aPlayer added to the staff list."));
+                                : "&c[Hypster-Report]&r &aPlayer added to the staff list."));
                 return true;
             }
 
@@ -129,14 +129,14 @@ public class ReportCommand implements CommandExecutor {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                                         ? "&aRemoved player from the staff list."
-                                        : "&4&l[EasyReport]&r &aRemoved player from the staff list."));
+                                        : "&c[Hypster-Report]&r &aRemoved player from the staff list."));
                         return true;
                     }
                 }
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                                 ? "&cPlayer not on the staff list."
-                                : "&4&l[EasyReport]&r &cPlayer not on the staff list."));
+                                : "&c[Hypster-Report]&r &cPlayer not on the staff list."));
                 return true;
             }
 
@@ -153,7 +153,7 @@ public class ReportCommand implements CommandExecutor {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                                         ? "&f" + args[1] + " &cdoes not have any records."
-                                        : "&4&l[EasyReport]&f " + args[1] + " &cdoes not have any records."));
+                                        : "&c[Hypster-Report]&r " + args[1] + " &cdoes not have any records."));
                         return true;
                     }
                     // Gets the player name from the database instead of arg[1] for guaranteed correct capitalization.
@@ -162,7 +162,7 @@ public class ReportCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                                     ? "&cReports against &f" + playerBeingQueried + ":"
-                                    : "&4&l[EasyReport]&r &cReports against &f" + playerBeingQueried + ":"));
+                                    : "&c[Hypster-Report]&r &cReports against &f" + playerBeingQueried + ":"));
 
                     for (ArrayList<String> currentRecord : reportRecords) {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -178,7 +178,7 @@ public class ReportCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                             ? "&cYou have to first set up a database and configure 'config.yml' accordingly in order to use this feature."
-                            : "&4&l[EasyReport]&r &cYou have to first set up a database and configure 'config.yml' accordingly in order to use this feature."));
+                            : "&c[Hypster-Report]&r &cYou have to first set up a database and configure 'config.yml' accordingly in order to use this feature."));
                     return true;
 
                 } else if (args[0].equalsIgnoreCase("records") && argsNumber == 1) {
@@ -186,7 +186,7 @@ public class ReportCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                                 ? "&cUsage: /report records <player>"
-                                : "&4&l[EasyReport]&r &cUsage: /report records <player>"));
+                                : "&c[Hypster-Report]&r &cUsage: /report records <player>"));
                     return true;
                 }
             } catch (Exception e) {
@@ -200,12 +200,12 @@ public class ReportCommand implements CommandExecutor {
             if ((reportedPlayer = Bukkit.getPlayer(args[0])) != null && argsNumber == 2 && !reportedPlayer.equals(player)) {
                 if (!permissionCheck(player, "report.report")) {return true;}
 
-                String reportReason = args[1];
+                String reportReason = String.join(" ", Arrays.copyOfRange(args, 1, argsNumber)).replace("-", " ");
 
                 String staffNotificationMsg = MessageFormat.format(
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
-                        ? "&a{0} &fjust reported &c{1} &ffor &c{2}."
-                        : "&4&l[EasyReport]&r &a{0} &fjust reported &c{1} &ffor &c{2}."
+                        ? "&c&lNEW REPORT! \n \n&cReporter: &a{0} \n&cReported Username: &a{1} \n&cReason: &a{2} \n&cServer: &a{3} \n&r \n&c&lPlease handle this. Check Discord for more information!\n&r\n&a"
+                        : "&r\n&c[Hypster-Report]&r &c&lNEW REPORT! \n \n&cReporter: &a{0} \n&cReported Username: &a{1} \n&cReason: &a{2} \n&cServer: &a{3} \n&r \n&c&lPlease handle this. Check Discord for more information!\n&r\n&a"
                         , player.getName(), reportedPlayer.getName(), reportReason);
 
                 boolean staffNotified = false;
@@ -218,19 +218,19 @@ public class ReportCommand implements CommandExecutor {
 
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
-                                ? "&cThank you! &fYour report has been received and the staff were notified."
-                                : "&4&l[EasyReport]&r &cThank you! &fYour report has been received and the staff were notified."));
+                                        ? "&aThanks for reporting cheating and helping make the Hypster community safer. We will review your report further!"
+                                        : "&c[Hypster-Report]&r &aThanks for reporting cheating and helping make the Hypster community safer. We will review your report further!"));
 
                         if (mainClass.getConfig().getBoolean("staffNotificationSound"))
-                            staff.playSound(staff.getLocation(), Sound.ENTITY_CAT_HISS, 1.0f, 1.0f);
+                            staff.playSound(staff.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1.0f, 1.0f);
                     }
                 }
 
                 if (!staffNotified) {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
-                                    ? "&cYour report went through but there's no staff online so no one got notified."
-                                    : "&4&l[EasyReport]&r &cYour report went through but there's no staff online so no one got notified."));
+                                    ? "&aThanks for reporting cheating and helping make the Hypster community safer. We will review your report further! but due to high demand, it is possible that the process will be a little longer than usual."
+                                    : "&c[Hypster-Report]&r &aThanks for reporting cheating and helping make the Hypster community safer. We will review your report further! but due to high demand, it is possible that the process will be a little longer than usual."));
                 }
 
                 try {
@@ -248,10 +248,10 @@ public class ReportCommand implements CommandExecutor {
                     }
                     // Discord webhook stuff if enabled.
                     if (mainClass.getConfig().getBoolean("discord.enabled")) {
-                        DiscordWebhookAPI.executeWebhook("REPORT",
+                        DiscordWebhookAPI.executeWebhook("NEW REPORT",
                                 MessageFormat.format(
-                                        "{0} was just reported by {1} for {2}.", reportedPlayer.getName(), player.getName(), reportReason)
-                                , Color.GREEN);
+                                        "**{0}** was just reported by **{1}** for `{2}`. Reported in server NULL", reportedPlayer.getName(), player.getName(), reportReason)
+                                , Color.RED);
                     }
                     return true;
 
@@ -265,22 +265,23 @@ public class ReportCommand implements CommandExecutor {
                 if (!permissionCheck(player, "report.report")) {return true;}
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
-                                ? "&cYou cannot report yourself!"
-                                : "&4&l[EasyReport] &cYou cannot report yourself!"));
+                                ? "&cHey! You cannot report yourself."
+                                : "&c[Hypster-Report]&r &cHey! You cannot report yourself."));
                 return true;
 
             } else if (reportedPlayer == null && argsNumber == 2) {
                 if (!permissionCheck(player, "report.report")) {return true;}
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
-                                ? "&cThe player you tried to report either doesn't exist or isn't online."
-                                : "&4&l[EasyReport] &cThe player you tried to report either doesn't exist or isn't online."));
+                                ? "&cThe player you tried to report is not online or not on the same server as you."
+                                : "&c[Hypster-Report]&r &cThe player you tried to report is not online or not on the same server as you."));
             } else {
                 if (!permissionCheck(player, "report.report")) {return true;}
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
-                                ? "&cUsage: /report <player> <reason>"
-                                : "&4&l[EasyReport]&r &cUsage: /report <player> <reason>"));
+                                ? "&cUsage: /report <player> <reason> \n&cExample: &f/report steve hacking-xray"
+                                : "&c[Hypster-Report]&r &cUsage: /report <player> <reason> \n&cExample: &f/report steve hacking-xray"));
+                return true;
             }
         } catch (Exception e) {
             try {
@@ -301,7 +302,7 @@ public class ReportCommand implements CommandExecutor {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     mainClass.getConfig().getBoolean("removePluginPrefixFromChatMessages")
                             ? "&cYou do not have permission to use this command."
-                            : "&4&l[EasyReport]&r &cYou do not have permission to use this command."));
+                            : "&c[Hypster-Report]&r &cYou do not have permission to use this command."));
             return false;
         }
         return true;
