@@ -1,4 +1,4 @@
-# EasyReport
+# EasyReport - Modified
 Turp's Easy &amp; Simple Report Plugin (EasyReport) is a plugin made to easily report players with the /report &lt;player> &lt;reason> command. <br />It also contains a bunch of other useful optional features like database and Discord webhook integration.
 
 **This is the official repository for the EasyReport plugin.**  
